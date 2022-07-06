@@ -43,6 +43,9 @@ public class main {
                  case "4":
                     addNewSlangWord();
                     break;
+                 case "5":
+                    editSlangWord();
+                    break;
                 case "0":
                     System.out.println("exited!");
                     exit = true;
@@ -119,7 +122,7 @@ public class main {
         System.out.println("----------MENU----------");
         System.out.println("1. Find by slang word");
         System.out.println("2. Find by definition");
-        System.out.println("3. Search history)");
+        System.out.println("3. Search history");
         System.out.println("4. Add 1 slang word");
         System.out.println("5. Edit 1 slang word");
         System.out.println("6. Delete 1 slang word");
@@ -188,6 +191,35 @@ public class main {
 
         } else {
             System.out.println("\nThe word you entered already exists in the slang word.");
+        }
+    }
+      
+       private static void editSlangWord() {
+        System.out.println("");
+        Scanner kb = new Scanner(System.in);
+        System.out.print("\nEnter the key you would like to edit to the slang word: ");
+        String key = kb.nextLine();
+        Entry found = SlangWord.findByKey(key);
+        if (found == null) {
+            System.out.println("\nSlang word not found.");
+
+        } else {
+            List<String> definition = new ArrayList<>();
+            String str;
+            System.out.print("\nPlease enter the definition of the key: ");
+            str = kb.nextLine();
+            System.out.print("");
+            definition.add(str);
+            do {
+                System.out.print("Have another definition?? if not enter to end : ");
+                str = kb.nextLine();
+                if (!str.isEmpty()) {
+                    definition.add(str);
+                }
+            } while (!str.isEmpty());
+            SlangWord.remove(found.key);
+            SlangWord.insert(found.key, definition);
+            truncateFile("slang.txt");
         }
     }
 }
