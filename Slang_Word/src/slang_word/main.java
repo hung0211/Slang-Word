@@ -1,0 +1,117 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package slang_word;
+
+import java.io.*;
+import java.util.*;
+
+/**
+ *
+ * @author PhiHung
+ */
+public class main {
+
+    /**
+     * @param args the command line arguments
+     */
+    private static AVLTree SlangWord = new AVLTree();
+    private static AVLTree historySearch = new AVLTree();
+    public static void main(String[] args) {
+        // TODO code application logic here
+        
+        readFile("slang.txt", SlangWord);
+        String choose = null;
+        boolean exit = false;
+        Scanner kb = new Scanner(System.in);
+        while (true) {
+            menu();
+            choose = kb.nextLine();
+            switch (choose) {
+                default:
+                    System.out.println("invalid! please choose action in below menu:");
+                    break;
+            }
+            pressEnter();
+            if (exit) {
+                break;
+            }
+        }
+    }
+    static void pressEnter() {
+        String key_press = "";
+        do {
+            System.out.println("Press 'ENTER' to continue...");
+            key_press = (new Scanner(System.in)).nextLine();
+        } while (key_press == "");
+        clrscr();
+    }
+    public static void clrscr() {
+        System.out.print("\033[H\033[2J");
+        System.out.flush();
+    }
+    public static void readFile(String fileName, AVLTree avl) {
+        System.out.println("");
+        try (BufferedReader saved = new BufferedReader(new FileReader(fileName))) {
+            String line;
+            while ((line = saved.readLine()) != null) {
+
+                if (line.contains("`")) {
+
+                    List<String> tar = new ArrayList<>();
+
+                    String[] s = line.split("`");
+                    if (s[1].contains("|")) {
+                        String[] tmp = s[1].split("\\|");
+                        for (int i = 0; i < tmp.length; i++) {
+                            tmp[i] = tmp[i].trim();
+                        }
+                        tar = Arrays.asList(tmp);
+                    } else {
+                        tar.add(s[1]);
+                    }
+
+                    Entry newEntry = new Entry(s[0], tar);
+                }
+            }
+            System.out.println("Slang Word successfully loaded.");
+        } catch (IOException e) {
+            System.out.println("Invalid File name.");
+        }
+    }
+
+    public static void truncateFile(String url) {
+        File file = new File(url);
+        try (PrintWriter pw = new PrintWriter(file)) {
+            try {
+                pw.print(SlangWord.saveTree());
+            } catch (Exception e) {
+                System.out.println("Can't truncate to file");
+            } finally {
+                pw.close();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void menu() {
+        System.out.println("----------MENU----------");
+        System.out.println("1. Find by slang word");
+        System.out.println("2. Find by definition");
+        System.out.println("3. Search history)");
+        System.out.println("4. Add 1 slang word");
+        System.out.println("5. Edit 1 slang word");
+        System.out.println("6. Delete 1 slang word");
+        System.out.println("7. Reset original list");
+        System.out.println("8. Random 1 slang ");
+        System.out.println("9. Quiz by slang word");
+        System.out.println("10. Quiz by definition");
+        System.out.println("0. Exitt");
+        System.out.println("-------------------------------------");
+        System.out.print("Input number to choose: ");
+    }
+}
+}
