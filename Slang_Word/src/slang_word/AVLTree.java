@@ -163,5 +163,26 @@ public class AVLTree implements Serializable{
         return findByKey(key, root);
     }
 
-    
+    private List<Entry> findByDefinition(String val, Entry check) {
+        if (check == null) {
+            return null;
+        }
+        List<Entry> found = new ArrayList<Entry>();
+        if (check.Left != null) {
+            found.addAll(findByDefinition(val, check.Left));
+        }
+
+        if (check.toString().contains(val) == true) {
+            found.add(check);
+
+        }
+        if (check.Right != null) {
+            found.addAll(findByDefinition(val, check.Right));
+        }
+        return found;
+    }
+
+    public List<Entry> findByDefinition(String val) {
+        return findByDefinition(val, root);
+    }
 }

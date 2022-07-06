@@ -33,6 +33,9 @@ public class main {
                 case "1":
                     findByKey();
                     break;
+                case "2":
+                    findByDefinition();
+                    break;
                 case "0":
                     System.out.println("exited!");
                     exit = true;
@@ -133,6 +136,23 @@ public class main {
         } else {
             System.out.println(found.toString());
             found.writeLine("history.txt");
+        }
+    }
+    
+     private static void findByDefinition() {
+        System.out.println("");
+        Scanner kb = new Scanner(System.in);
+        System.out.print("\nEnter the definition you would like to find: ");
+        String find = kb.nextLine();
+        List<Entry> found = new ArrayList<Entry>();
+        found = SlangWord.findByDefinition(find);
+        if (found == null) {
+            System.out.println("Slang word not found.");
+        } else {
+            for (int i = 0; i < found.size(); i++) {
+                System.out.print(found.get(i).toString());
+                found.get(i).writeLine("history.txt");
+            }
         }
     }
 }
