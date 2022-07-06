@@ -41,7 +41,7 @@ public class Entry implements Serializable {
     public void setRight(Entry x) {
         this.Right = x;
     }
-
+    
     public int getHeight() {
         return height;
     }

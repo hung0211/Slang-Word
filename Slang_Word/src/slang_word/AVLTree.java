@@ -8,7 +8,6 @@ package slang_word;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map.Entry;
 import java.util.Random;
 /**
  *
@@ -69,6 +68,39 @@ public class AVLTree implements Serializable{
         return rotateWithRight(n1);
     }
 
+    private Entry insert(String key, List<String> definition, Entry check) {
+        if (check == null) {
+            check = new Entry(key, definition);
+        } else if (key.compareTo(check.key) < 0) {
+            check.Left = insert(key, definition, check.Left);
+            if (getHeight(check.Left) - getHeight(check.Right) == 2) {
+                if (key.compareTo(check.Left.key) < 0) {
+                    check = rotateWithLeft(check);
+                } else {
+                    check = doubleWithLeft(check);
+                }
+            }
+        } else if (key.compareTo(check.key) > 0) {
+            check.Right = insert(key, definition, check.Right);
+            if (getHeight(check.Right) - getHeight(check.Left) == 2) {
+                if (key.compareTo(check.Right.key) > 0) {
+                    check = rotateWithRight(check);
+                } else {
+                    check = doubleWithRight(check);
+                }
+            }
+        } else {
+            System.out.println("The key you entered already exists in Slang word.");
+            
+        }
+        check.height = (Integer.max(getHeight(check.Left), getHeight(check.Right)) + 1);
+        return check;
+    }
+
+    public void insert(String key, List<String> definition) {
+        root = insert(key, definition, root);
+    }
+
     public void printTree() {
         printTree(root);
 
@@ -87,4 +119,49 @@ public class AVLTree implements Serializable{
             printTree(check.Right);
         }
     }
+
+     public String saveTree() {
+        return saveTree(root);
+    }
+
+    private String saveTree(Entry check) {
+
+        String savedlist = check.toString();
+        if (check.Left != null) {
+
+            savedlist += saveTree(check.Left);
+        }
+        if (check.Right != null) {
+
+            savedlist += saveTree(check.Right);
+        }
+        return savedlist;
+
+    }
+
+    private Entry findByKey(String key, Entry check) {
+        if (check == null) {
+            return check;
+        }
+        Entry returned = null;
+        if (key.compareTo(check.key) == 0) {
+            returned = check;
+        } else if (key.compareTo(check.key) < 0) {
+            if (check.Left != null) {
+                returned = findByKey(key, check.Left);
+            }
+        } else if (key.compareTo(check.key) > 0) {
+            if (check.Right != null) {
+                returned = findByKey(key, check.Right);
+            }
+        }
+        return returned;
+
+    }
+
+    public Entry findByKey(String key) {
+        return findByKey(key, root);
+    }
+
+    
 }

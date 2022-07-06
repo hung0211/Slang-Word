@@ -30,6 +30,13 @@ public class main {
             menu();
             choose = kb.nextLine();
             switch (choose) {
+                case "1":
+                    findByKey();
+                    break;
+                case "0":
+                    System.out.println("exited!");
+                    exit = true;
+                    break;
                 default:
                     System.out.println("invalid! please choose action in below menu:");
                     break;
@@ -74,6 +81,7 @@ public class main {
                     }
 
                     Entry newEntry = new Entry(s[0], tar);
+                    avl.insert(s[0], tar);
                 }
             }
             System.out.println("Slang Word successfully loaded.");
@@ -113,5 +121,19 @@ public class main {
         System.out.println("-------------------------------------");
         System.out.print("Input number to choose: ");
     }
+    private static void findByKey() {
+        System.out.println("");
+        Scanner kb = new Scanner(System.in);
+        System.out.print("\nEnter the slang word you would like to find: ");
+        String find = kb.nextLine();
+        Entry found = SlangWord.findByKey(find);
+
+        if (found == null) {
+            System.out.println("Slang word not found.");
+        } else {
+            System.out.println(found.toString());
+            found.writeLine("history.txt");
+        }
+    }
 }
-}
+
