@@ -36,15 +36,18 @@ public class main {
                 case "2":
                     findByDefinition();
                     break;
-                 case "3":
+                case "3":
                     readFile("history.txt", historySearch);
                     historySearch.printTree();
                     break;
-                 case "4":
+                case "4":
                     addNewSlangWord();
                     break;
-                 case "5":
+                case "5":
                     editSlangWord();
+                    break;
+                case "6":
+                    deleteSlangWord();
                     break;
                 case "0":
                     System.out.println("exited!");
@@ -68,10 +71,12 @@ public class main {
         } while (key_press == "");
         clrscr();
     }
+    
     public static void clrscr() {
         System.out.print("\033[H\033[2J");
         System.out.flush();
     }
+    
     public static void readFile(String fileName, AVLTree avl) {
         System.out.println("");
         try (BufferedReader saved = new BufferedReader(new FileReader(fileName))) {
@@ -134,6 +139,7 @@ public class main {
         System.out.println("-------------------------------------");
         System.out.print("Input number to choose: ");
     }
+    
     private static void findByKey() {
         System.out.println("");
         Scanner kb = new Scanner(System.in);
@@ -149,7 +155,7 @@ public class main {
         }
     }
     
-     private static void findByDefinition() {
+    private static void findByDefinition() {
         System.out.println("");
         Scanner kb = new Scanner(System.in);
         System.out.print("\nEnter the definition you would like to find: ");
@@ -166,7 +172,7 @@ public class main {
         }
     }
      
-      private static void addNewSlangWord() {
+    private static void addNewSlangWord() {
         System.out.println("");
         Scanner kb = new Scanner(System.in);
         System.out.print("\nEnter the key you would like to add to the slang word: ");
@@ -194,7 +200,7 @@ public class main {
         }
     }
       
-       private static void editSlangWord() {
+    private static void editSlangWord() {
         System.out.println("");
         Scanner kb = new Scanner(System.in);
         System.out.print("\nEnter the key you would like to edit to the slang word: ");
@@ -220,6 +226,25 @@ public class main {
             SlangWord.remove(found.key);
             SlangWord.insert(found.key, definition);
             truncateFile("slang.txt");
+        }
+    }
+    
+    private static void deleteSlangWord() {
+        System.out.println("");
+        Scanner kb = new Scanner(System.in);
+        System.out.print("Please enter the key of the slang word you want to delete: ");
+        String key = kb.nextLine();
+        if (SlangWord.findByKey(key) == null) {
+            System.out.println("SLang word not found.");
+        } else {
+            System.out.print("Are you sure? (y/n): ");
+            String choose = kb.nextLine();
+            if (choose.endsWith("y")) {
+                SlangWord.remove(key);
+                truncateFile("slang.txt");
+                System.out.println("Succcessfully removed " + key);
+            }
+
         }
     }
 }
