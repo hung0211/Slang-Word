@@ -191,7 +191,6 @@ public class AVLTree implements Serializable{
         root = remove(x, root);
     }
 
-    
     private Entry findMinNode(Entry find) {
         if (find.Left == null) {
             return find;
@@ -246,5 +245,13 @@ public class AVLTree implements Serializable{
             }
         }
         return check;
+    }
+    
+    public void removeAll(Entry check) {
+        if (check != null) {
+            removeAll(check.Left);
+            remove(check.key);
+            removeAll(check.Right);
+        }
     }
 }
